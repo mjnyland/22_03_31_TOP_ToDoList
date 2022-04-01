@@ -1,0 +1,23 @@
+.todo{
+    display: grid;
+    grid-template-rows: repeat(4, 1fr);
+    grid-template-columns: 1fr 10fr;
+    align-items: center;
+}
+
+.todo-date,
+.todo-descrip{
+    grid-column: 2/-1;
+}
+
+.todo-hr{
+    grid-column: -3/-1;
+    width: 100%;
+    border: none;
+    height: 2px;
+    background-color: #AD76Ae;
+}
+
+.todo-checkbox{
+    margin: 0 auto;
+}
