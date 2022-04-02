@@ -9,8 +9,50 @@
 </head>
 
   <body>
-    <button class="add-todo">Add todo</button>
-    <div class="todo-cont"></div>
+
+    <div class="projects-sidebar">
+      <h2 class="projects-heading">Projects</h2>
+      <div class="projects-cont">
+
+        <div class="project">
+          <h3 class="project-label">Inbox</h3>
+        </div>
+        
+      </div>
+
+      <div class="new-project-form">
+        <label for="project-name">Name:</label><br>
+        <input type="text" id="project-name" name="project-name" placeholder="Project Name"><br>
+        <button class="add-project-button">Add Project</button>
+      </div>
+
+      <button class="new-project-button">New Project</button>
+
+    </div>
+
+    <div class="current-project">
+      <h1 class="project-heading">Inbox</h1>
+
+      <div class="new-todo-form">
+
+        <label for="fname">Title:</label><br>
+        <input type="text" id="todo-title" name="fname"><br>
+
+        <label for="lname">Description:</label><br>
+        <input type="text" id="todo-descrip" name="lname"><br><br>
+
+        <label for="date">Due Date:</label><br>
+        <input type="text" id="todo-date" name="date"><br><br>
+        
+        <button class="add-todo-button">Add todo</button>
+      </div>
+  
+      <button class="new-todo-button">New todo</button>
+
+      <div class="todo-cont"></div>
+
+    </div>
+
    <script src="main.js"></script>
   </body>
 

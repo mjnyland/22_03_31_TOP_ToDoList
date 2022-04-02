@@ -12,7 +12,7 @@ function createNewElement(el, className, textContent){
     return newEl
 }
 
-function displayTodo(title, date, descrip){
+function displayTodo(cont, title, date, descrip){
     const newTodo = createNewElement('DIV', 'todo');
     const todoCheckbox = createNewElement('INPUT', 'todo-checkbox');
     todoCheckbox.type = "checkbox"
@@ -23,7 +23,26 @@ function displayTodo(title, date, descrip){
 
     newTodo.append(todoCheckbox, todoTitle, todoDate, todoDescrip, todoHR)
 
-    return newTodo
+    cont.append(newTodo)
+
 }
 
-export { clearHTML, createNewElement, displayTodo }
+function displayProjectName(cont, name){
+    const newProject = createNewElement('DIV', 'project');
+    const projectName = createNewElement('H3', 'project-label', name);
+
+    newProject.append(projectName)
+
+    cont.append(newProject)
+
+}
+
+function displayProject(project){
+
+}
+
+function switchDisplay(el, newDisplay){
+    el.style.display = newDisplay
+}
+
+export { clearHTML, createNewElement, displayTodo, displayProjectName, switchDisplay }

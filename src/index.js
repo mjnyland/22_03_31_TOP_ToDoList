@@ -1,3 +1,7 @@
 import { Controller } from './controller'
 
-Controller.addTodo()
+Controller.handleProjectChangeRequest()
+Controller.handleNewProjectRequest()
+Controller.handleAddProjectRequest()
+Controller.handleNewTodoRequest()
+Controller.handleAddTodoRequest()
