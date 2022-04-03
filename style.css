@@ -32,6 +32,10 @@ body{
     display: none;
 }
 
+.project-label{
+    pointer-events: none;
+}
+
 /*----------------------------------------------------------Todo--*/
 
 .new-todo-form{
