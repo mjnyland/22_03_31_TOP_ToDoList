@@ -1,6 +1,6 @@
-function clearHTML(el){
-    while(el.firstChild){
-        el.remove(el.firstChild)
+function clearHTML(el) {
+    while(el.firstChild) {
+        el.removeChild(el.firstChild)
     }
 }
 
@@ -27,14 +27,18 @@ function displayTodo(cont, title, date, descrip){
 
 }
 
-function displayProjectName(cont, name){
+function createProjLabel(name){
     const newProject = createNewElement('DIV', 'project');
     const projectName = createNewElement('H3', 'project-label', name);
 
     newProject.append(projectName)
+    newProject.classList.add(name)
 
-    cont.append(newProject)
+    return newProject;
+}
 
+function appendProjectLabel(cont, label){
+    cont.append(label)
 }
 
 function displayProject(project){
@@ -45,4 +49,4 @@ function switchDisplay(el, newDisplay){
     el.style.display = newDisplay
 }
 
-export { clearHTML, createNewElement, displayTodo, displayProjectName, switchDisplay }
+export { clearHTML, createNewElement, displayTodo, appendProjectLabel, switchDisplay, createProjLabel }

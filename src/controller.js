@@ -8,6 +8,7 @@ const Controller = (() => {
     const newProjectForm = document.querySelector('.new-project-form');
     const addProjectButton = document.querySelector('.add-project-button');
     const projectsCont = document.querySelector('.projects-cont');
+    const projectHeading = document.querySelector('.project-heading')
 
     const newTodoButton = document.querySelector('.new-todo-button');
     const addTodoButton = document.querySelector('.add-todo-button');
@@ -15,15 +16,40 @@ const Controller = (() => {
     const todoCont = document.querySelector('.todo-cont');
 
     const projects = [Project('Inbox', [])]
+    projects[0].DOMElement = projectsCont.children[0];
+    projects[0].DOMElement.classList.add('active')
 
     return {
 
 
         handleProjectChangeRequest: function(){
             document.addEventListener('click', (e) => {
-                if(e.target.className === 'project-label'){
+                if(e.target.classList[0] === 'project'){
+
+                    //Switching active project
+                    const activeProj = document.querySelector('.active')
+                    activeProj.classList.remove('active')
                     const targetLabel = e.target;
-                    console.log(projects)
+                    targetLabel.classList.add('active')
+
+                    //Finding matching project
+                    projects.forEach((project) => {
+                        if (project.DOMElement === targetLabel) {
+
+                            //Changing headline
+                            projectHeading.textContent = project.getName();
+
+                            //Clearing project's todo cont
+                            DOM.clearHTML(todoCont)
+
+                            //Gathering project's todos
+                            const projectTodos = project.getTodos()
+                            projectTodos.forEach((todo) => {
+                                DOM.displayTodo(todoCont, todo.getTitle(), todo.getDescrip(), todo.getDueDate(), todo.getPriority())
+                            })
+
+                        }
+                    })
 
                 }
             })
@@ -35,8 +61,6 @@ const Controller = (() => {
             })
         },
 
-        //Here
-
         handleAddProjectRequest: function(){
             addProjectButton.addEventListener('click', (e) => {
 
@@ -47,7 +71,10 @@ const Controller = (() => {
                 } else {
                     const newProjectObj = Project(projectName.value, [])
 
-                    DOM.displayProjectName(projectsCont, newProjectObj.getName())
+                    const projectLabel = DOM.createProjLabel(newProjectObj.getName())
+                    newProjectObj.DOMElement = projectLabel;
+
+                    DOM.appendProjectLabel(projectsCont, newProjectObj.DOMElement)
 
                     projectName.value = '';
                     DOM.switchDisplay(newProjectForm, 'none')
@@ -64,7 +91,6 @@ const Controller = (() => {
             })
         },
 
-        //Here
 
         handleAddTodoRequest: function(){
             addTodoButton.addEventListener('click', (e) => {
@@ -80,6 +106,14 @@ const Controller = (() => {
                 
                     DOM.displayTodo(todoCont, newTodo.getTitle(), newTodo.getDescrip(), newTodo.getDueDate(), newTodo.getPriority())
                     DOM.switchDisplay(newTodoForm, 'none')
+                    const activeProj = document.querySelector('.active')
+
+                    projects.forEach((project) => {
+                        if (project.DOMElement === activeProj){
+                            console.log(project)
+                            project.addTodo(newTodo)
+                        }
+                    })
                 }
                 
             })
