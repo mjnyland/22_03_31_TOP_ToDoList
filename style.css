@@ -74,3 +74,7 @@ body{
 .todo-checkbox{
     margin: 0 auto;
 }
+
+.edit-todo-form{
+    display: none;
+}
