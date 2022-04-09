@@ -14,6 +14,7 @@ const Controller = (() => {
     const addTodoButton = document.querySelector('.add-todo-button');
     const newTodoForm = document.querySelector('.new-todo-form');
     const todoCont = document.querySelector('.todo-cont');
+    const editTodoForm = document.querySelector('.edit-todo-form')
 
     const projects = [Project('Inbox', [])]
     projects[0].DOMElement = projectsCont.children[0];
@@ -70,15 +71,11 @@ const Controller = (() => {
                     alert('Project must have a name')
                 } else {
                     const newProjectObj = Project(projectName.value, [])
-
                     const projectLabel = DOM.createProjLabel(newProjectObj.getName())
                     newProjectObj.DOMElement = projectLabel;
-
                     DOM.appendProjectLabel(projectsCont, newProjectObj.DOMElement)
-
                     projectName.value = '';
                     DOM.switchDisplay(newProjectForm, 'none')
-
                     projects.push(newProjectObj)
                 }
 
@@ -105,26 +102,92 @@ const Controller = (() => {
                     const newTodo = Todo(todoTitle.value, todoDescrip.value, todoDate.value, '1')
                 
                     DOM.displayTodo(todoCont, newTodo.getTitle(), newTodo.getDescrip(), newTodo.getDueDate(), newTodo.getPriority())
+                    newTodo.DOMElement = todoCont.lastChild;
                     DOM.switchDisplay(newTodoForm, 'none')
                     const activeProj = document.querySelector('.active')
 
                     projects.forEach((project) => {
                         if (project.DOMElement === activeProj){
-                            console.log(project)
                             project.addTodo(newTodo)
                         }
                     })
-                }
-                
+                } 
             })
 
                 //todoCont.append(newTodo)
                 newTodoForm.style.display = 'none'
             
+        },
+
+        
+
+        handleEditTodoRequest: function(){
+            document.addEventListener('click', (e) => {
+                if (e.target.className === 'edit-todo-link'){
+
+                    //Selecting target todo container, clearing it's HTML, and displaying edit form
+                    const targetTodoEl = e.target.parentNode
+                    DOM.clearHTML(targetTodoEl)
+                    targetTodoEl.append(editTodoForm)
+                    DOM.switchDisplay(editTodoForm, 'block')
+
+                    //Sorting through projects/todos to find target todo obj
+                    const activeProj = document.querySelector('.active')
+                    projects.forEach((project) => {
+                        if(activeProj === project.DOMElement){
+                            console.log(project)
+                            const todos = project.getTodos()
+                            todos.forEach((todo) => {
+                                console.log(todo.getTitle())
+                                if(targetTodoEl === todo.DOMElement){
+                                    editTodoForm.children[2].value = todo.getTitle()
+                                    editTodoForm.children[6].value = todo.getDescrip()
+                                    editTodoForm.children[11].value = todo.getDueDate()
+                                }
+                            })
+                        }
+                    })
+                } 
+            })
+        },
+
+        handleUpdateTodoRequest: function(){
+            document.addEventListener('click', (e) => {
+                if (e.target.className === 'update-todo-button'){
+                    //Turning form off
+                    DOM.switchDisplay(editTodoForm, 'none');
+
+                    //Selecting todo element
+                    const targetTodoEl = e.target.parentNode.parentNode;
+                    const targetTodoEditForm = e.target.parentNode;
+
+                    //Selecting the active project and finding the match project obj
+                    const activeProj = document.querySelector('.active');
+                    projects.forEach((project) => {
+                        if(activeProj === project.DOMElement){
+
+                            //Gathering project todos and finding the matching todo
+                            const todos = project.getTodos()
+                            todos.forEach((todo) => {
+
+                                console.log(todo.DOMElement)
+                                if(targetTodoEl === todo.DOMElement){
+                                    todo.editTitle(targetTodoEditForm.children[2].value)
+                                    todo.editDescrip(targetTodoEditForm.children[6].value)
+                                    todo.editDueDate(targetTodoEditForm.children[11].value)
+
+                                    DOM.updateTodo(targetTodoEl, todo.getTitle(), todo.getDescrip(), todo.getDueDate(), todo.getPriority())
+                                } else {
+                                    console.log('could not find a matching todo')
+                                }
+                            })
+                        }
+                    })
+                } 
+            })
         }
 
     }
-
 })();
 
 export { Controller }
