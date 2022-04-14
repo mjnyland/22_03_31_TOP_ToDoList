@@ -52,10 +52,11 @@ body{
 .todo{
     display: grid;
     grid-template-rows: repeat(4, 1fr);
-    grid-template-columns: 1fr 10fr;
+    grid-template-columns: 10fr 1fr;
     align-items: center;
 
     height: 200px;
+
 }
 
 .todo-date,
@@ -75,6 +76,6 @@ body{
     margin: 0 auto;
 }
 
-.edit-todo-form{
+.todo-edit-form-cont{
     display: none;
 }
