@@ -8,52 +8,26 @@ const Controller = (() => {
     const newProjectForm = document.querySelector('.new-project-form');
     const addProjectButton = document.querySelector('.add-project-button');
     const projectsCont = document.querySelector('.projects-cont');
-    const projectHeading = document.querySelector('.project-heading')
+    const todosCont = document.querySelector('.todos-cont');
 
     const newTodoButton = document.querySelector('.new-todo-button');
-    const addTodoButton = document.querySelector('.add-todo-button');
     const newTodoForm = document.querySelector('.new-todo-form');
-    const todoCont = document.querySelector('.todo-cont');
-    const editTodoForm = document.querySelector('.edit-todo-form')
+    const editTodoForm = document.querySelector('.todo-edit-form')
 
     const projects = [Project('Inbox', [])]
-    projects[0].DOMElement = projectsCont.children[0];
-    projects[0].DOMElement.classList.add('active')
+    projectsCont.children[0].classList.add('0')
+    projectsCont.children[0].classList.add('active');
+    projects[0].id = 0;
 
     return {
 
-
-        handleProjectChangeRequest: function(){
-            document.addEventListener('click', (e) => {
-                if(e.target.classList[0] === 'project'){
-
-                    //Switching active project
-                    const activeProj = document.querySelector('.active')
-                    activeProj.classList.remove('active')
-                    const targetLabel = e.target;
-                    targetLabel.classList.add('active')
-
-                    //Finding matching project
-                    projects.forEach((project) => {
-                        if (project.DOMElement === targetLabel) {
-
-                            //Changing headline
-                            projectHeading.textContent = project.getName();
-
-                            //Clearing project's todo cont
-                            DOM.clearHTML(todoCont)
-
-                            //Gathering project's todos
-                            const projectTodos = project.getTodos()
-                            projectTodos.forEach((todo) => {
-                                DOM.displayTodo(todoCont, todo.getTitle(), todo.getDescrip(), todo.getDueDate(), todo.getPriority())
-                            })
-
-                        }
-                    })
-
+        findMatchProj: function(elementID){
+            const int = parseInt(elementID);
+            for (const project of projects){
+                if (project.id === int){
+                    return project
                 }
-            })
+            }
         },
 
         handleNewProjectRequest: function(){
@@ -71,14 +45,28 @@ const Controller = (() => {
                     alert('Project must have a name')
                 } else {
                     const newProjectObj = Project(projectName.value, [])
-                    const projectLabel = DOM.createProjLabel(newProjectObj.getName())
-                    newProjectObj.DOMElement = projectLabel;
-                    DOM.appendProjectLabel(projectsCont, newProjectObj.DOMElement)
-                    projectName.value = '';
-                    DOM.switchDisplay(newProjectForm, 'none')
-                    projects.push(newProjectObj)
+                    projects.push(newProjectObj);
+                    newProjectObj.id = projects.length - 1;
+                    DOM.switchDisplay(newProjectForm, 'none');
+                    DOM.displayProjLabel(projectName.value, projects.length - 1);
                 }
+            })
+        },
 
+        handleProjectChangeRequest: function(){
+            const projectHeading = document.querySelector('.project-heading');
+            document.addEventListener('click', (e) => {
+                if(e.target.classList[0] === 'project'){
+                    //Switching active class
+                    const currActive = document.querySelector('.active');
+                    DOM.switchActive(currActive, e.target);
+                    //Matching target with obj
+                    const proj = this.findMatchProj(e.target.classList[1])
+                    //Displaying obj
+                    projectHeading.textContent = proj.name;
+                    DOM.clearHTML(todosCont)
+                    DOM.displayTodos(proj)
+                }
             })
         },
         
@@ -89,103 +77,71 @@ const Controller = (() => {
         },
 
 
-        handleAddTodoRequest: function(){
+        handleAddTodoRequest: function(proj){
+            const addTodoButton = document.querySelector('.add-todo-button');
             addTodoButton.addEventListener('click', (e) => {
-                const todoTitle = document.getElementById("todo-title");
+                //Hiding form
+                DOM.switchDisplay(newTodoForm, 'none');
 
-                if(todoTitle.value === ''){
-                    alert('todo must have a title')
-                } else {
-                    const todoDescrip = document.getElementById("todo-descrip");
-                    const todoDate = document.getElementById("todo-date");
+                //Gathering data
+                const todoTitle = document.getElementById('todo-title').value;
+                const todoDescrip = document.getElementById('todo-descrip').value;
+                const todoDate = document.getElementById('todo-date').value;
                 
-                    const newTodo = Todo(todoTitle.value, todoDescrip.value, todoDate.value, '1')
-                
-                    DOM.displayTodo(todoCont, newTodo.getTitle(), newTodo.getDescrip(), newTodo.getDueDate(), newTodo.getPriority())
-                    newTodo.DOMElement = todoCont.lastChild;
-                    DOM.switchDisplay(newTodoForm, 'none')
-                    const activeProj = document.querySelector('.active')
-
-                    projects.forEach((project) => {
-                        if (project.DOMElement === activeProj){
-                            project.addTodo(newTodo)
-                        }
-                    })
-                } 
+                //Getting project and adding todo to project
+                const currActive = document.querySelector('.active');
+                const proj = this.findMatchProj(currActive.classList[1])
+                proj.addTodo(todoTitle, todoDescrip, todoDate, 1)
+                console.log(proj.todos)
+                DOM.clearHTML(todosCont)
+                DOM.displayTodos(proj)
+                DOM.clearFormData(newTodoForm)
             })
-
-                //todoCont.append(newTodo)
-                newTodoForm.style.display = 'none'
-            
+            //Selecting form elements
         },
-
-        
 
         handleEditTodoRequest: function(){
             document.addEventListener('click', (e) => {
                 if (e.target.className === 'edit-todo-link'){
 
-                    //Selecting target todo container, clearing it's HTML, and displaying edit form
-                    const targetTodoEl = e.target.parentNode
-                    DOM.clearHTML(targetTodoEl)
-                    targetTodoEl.append(editTodoForm)
-                    DOM.switchDisplay(editTodoForm, 'block')
+                    const todoInfoCont = e.target.parentNode;
+                    const todoCont = todoInfoCont.parentNode;
+                    const editTodoForm = todoCont.children[1];
 
-                    //Sorting through projects/todos to find target todo obj
-                    const activeProj = document.querySelector('.active')
-                    projects.forEach((project) => {
-                        if(activeProj === project.DOMElement){
-                            console.log(project)
-                            const todos = project.getTodos()
-                            todos.forEach((todo) => {
-                                console.log(todo.getTitle())
-                                if(targetTodoEl === todo.DOMElement){
-                                    editTodoForm.children[2].value = todo.getTitle()
-                                    editTodoForm.children[6].value = todo.getDescrip()
-                                    editTodoForm.children[11].value = todo.getDueDate()
-                                }
-                            })
-                        }
-                    })
+                    DOM.populateEditForm(editTodoForm, todoInfoCont);
+                    DOM.switchDisplay(todoInfoCont, 'none');
+                    DOM.switchDisplay(editTodoForm, 'block');      
+                    
                 } 
             })
         },
 
         handleUpdateTodoRequest: function(){
             document.addEventListener('click', (e) => {
-                if (e.target.className === 'update-todo-button'){
+                if (e.target.className === 'edit-todo-form-button'){
+
+                    //Orienting the DOM
+
+                    const editTodoForm = e.target.parentNode;
+                    const todoCont = editTodoForm.parentNode;
+                    const todoInfoCont = todoCont.children[0];
+
+                    //Selecting active project obj
+                    let activeProj = document.querySelector('.active');
+                    let projObj = this.findMatchProj(activeProj.classList[1])
+                    //Find Todo and update it with form data
+                    projObj.editTodo(parseInt(todoCont.classList[1]), editTodoForm.children[1].value, editTodoForm.children[3].value, editTodoForm.children[5].value)
+
+                    
                     //Turning form off
+
                     DOM.switchDisplay(editTodoForm, 'none');
-
-                    //Selecting todo element
-                    const targetTodoEl = e.target.parentNode.parentNode;
-                    const targetTodoEditForm = e.target.parentNode;
-
-                    //Selecting the active project and finding the match project obj
-                    const activeProj = document.querySelector('.active');
-                    projects.forEach((project) => {
-                        if(activeProj === project.DOMElement){
-
-                            //Gathering project todos and finding the matching todo
-                            const todos = project.getTodos()
-                            todos.forEach((todo) => {
-
-                                console.log(todo.DOMElement)
-                                if(targetTodoEl === todo.DOMElement){
-                                    todo.editTitle(targetTodoEditForm.children[2].value)
-                                    todo.editDescrip(targetTodoEditForm.children[6].value)
-                                    todo.editDueDate(targetTodoEditForm.children[11].value)
-
-                                    DOM.updateTodo(targetTodoEl, todo.getTitle(), todo.getDescrip(), todo.getDueDate(), todo.getPriority())
-                                } else {
-                                    console.log('could not find a matching todo')
-                                }
-                            })
-                        }
-                    })
+                    DOM.clearHTML(todosCont);
+                    DOM.displayTodos(projObj);
                 } 
             })
         }
+
 
     }
 })();
