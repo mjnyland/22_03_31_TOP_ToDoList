@@ -1,5 +1,11 @@
 /*----------------------------------------------------------Document--*/
 
+:root{
+    --lightPurp: #EFE7F4;
+    --purp: #AD76AE;
+    --darkPurp: #43335B;
+}
+
 html, body{
     height: 100%;
     padding: 0;
@@ -15,17 +21,28 @@ body{
 /*----------------------------------------------------------Projects--*/
 
 .current-project{
-    background-color: #43335B;
+    background-color: var(--darkPurp);
     display: grid;
-    grid-template-rows: 80px 200px 1fr 200px;
+    grid-template-rows: 80px 1fr;
+    padding-left: 3em;
 }
 
 .projects-heading{
+    margin: 1em 0 0 0;
     height: 30px;
+    font-weight: 400;
+    font-size: 18px;
+}
+
+.project-rule{
+    margin: 0 0 1.5em 0;
 }
 
 .project-heading{
+    font-family: 'EB Garamond', serif;
+    font-size: 40px;
     height: 30px;
+    color: var(--lightPurp);
 }
 
 .new-project-form{
@@ -34,12 +51,53 @@ body{
 
 .project-label{
     pointer-events: none;
+    font-size: 14px;
+    font-weight: 400;
+    margin: 0;
+}
+
+.project{
+    padding: .5em .5em .5em 20px;
+    border-left: 3px solid #FFFFFF;
+    cursor: pointer;
+}
+
+.active{
+    box-sizing: border-box;
+    background-color: #ebe7f0;
+    margin-right: -1em;
+    border-left: 3px solid var(--darkPurp);
+}
+
+.active .project-label{
+    font-weight: 600;
+}
+
+.projects-sidebar{
+    color: var(--darkPurp);
+    font-family: 'Roboto Mono', monospace;
+    padding: 1em 1em 0 1em;
+}
+
+.new-project-button-cont{
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    margin-left: 20px;
+}
+
+.new-project-button-cont h5{
+    margin-left: 10px;
+    opacity: .3;
 }
 
 /*----------------------------------------------------------Todo--*/
 
 .new-todo-form{
     display: none;
+    position: absolute;
+    top: 180px;
     height: 300px;
     width: 100%;
 }
@@ -49,33 +107,110 @@ body{
     width: 10%;
 }
 
+.todos-cont{
+    margin-top: 2em;
+    grid-row: 2/3;
+    height: 100%;
+}
+
 .todo{
+    font-family: 'Roboto Mono', monospace;
     display: grid;
-    grid-template-rows: repeat(4, 1fr);
-    grid-template-columns: 10fr 1fr;
+    grid-template-rows: 1fr 15px;
+    grid-template-columns: 1fr;
     align-items: center;
-
-    height: 200px;
+    width: 80%;
 
 }
 
-.todo-date,
+.todo-title,
 .todo-descrip{
-    grid-column: 2/-1;
+    color: var(--lightPurp)
 }
 
-.todo-hr{
-    grid-column: -3/-1;
-    width: 100%;
-    border: none;
-    height: 2px;
-    background-color: #AD76Ae;
+.todo-info-cont{
+    margin-top: 10px;
+    grid-column: 1/2;
+    display: grid;
+    grid-template-columns: 1fr 10fr;
+    align-items: center;
 }
 
 .todo-checkbox{
-    margin: 0 auto;
+    grid-column: 1/2;
+}
+
+.todo-title,
+.todo-date,
+.todo-descrip,
+.edit-todo-link{
+    grid-column: 2/3;
+    margin: .2em;
+}
+
+.todo-date{
+    color: var(--purp);
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.amend-todo-cont{
+    grid-column: 2/3;
+    display: flex;
+    align-items: center;
+}
+
+.edit-todo-link,
+.delete-todo-link{
+    color: var(--purp);
+    cursor: pointer;
+}
+
+.delete-todo-link{
+    margin-left: 10px;
+}
+
+.todo-hr{
+    grid-column: 1/2;
+    width: 100%;
+    border: none;
+    height: 1px;
+    background-color: #AD76Ae;
+}
+
+.checkbox-container{
+    position: relative;
+    height: 30px;
+    width: 30px;
+}
+
+.todo-checkbox{
+    position: absolute;
+    top: 6px;
+    left: 0;
+    height: 15px;
+    width: 15px;
+    background-color: var(--darkPurp);
+    border-radius: 3px;
+    border: 2px solid #FFF;
 }
 
 .todo-edit-form-cont{
     display: none;
+}
+
+.todo-edit-form-cont label{
+    color: var(--purp);
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 8px;
+}
+
+.todo-edit-form-cont input{
+    margin-bottom: 8px;
+}
+
+.todo-descrip{
+    font-weight: 300;
+    font-size: 16px;
 }

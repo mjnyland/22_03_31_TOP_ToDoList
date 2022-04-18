@@ -14,9 +14,12 @@ function createNewElement(el, className, textContent){
 
 function displayTodos(proj){
     const todosCont = document.querySelector('.todos-cont');
-    proj.getTodos().forEach((todo) => {
-        displayTodo(todosCont, todo.id, todo.title, todo.date, todo.descrip)
-    })
+    //console.log(proj.getTodos())
+    if(proj.getTodos().length > 0){
+        proj.getTodos().forEach((todo) => {
+            displayTodo(todosCont, todo.id, todo.title, todo.date, todo.descrip)
+        })
+    }
 }
 
 function displayTodo(cont, id, title, date, descrip){
@@ -26,14 +29,19 @@ function displayTodo(cont, id, title, date, descrip){
     //Info
     const todoInfoCont = createNewElement('DIV', 'todo-info-cont');
 
-    const todoCheckbox = createNewElement('INPUT', 'todo-checkbox');
-    todoCheckbox.type = "checkbox"
+    const checkBoxCont = createNewElement('DIV', 'checkbox-container');
+    const todoCheckboxChecked = createNewElement('SPAN', 'todo-checkbox-checked');
+    const todoCheckbox = createNewElement('SPAN', 'todo-checkbox');
+    checkBoxCont.append(todoCheckboxChecked, todoCheckbox)
     const todoTitle = createNewElement('H3', 'todo-title', title);
     const todoDate = createNewElement('H4', 'todo-date', date);
     const todoDescrip = createNewElement('P', 'todo-descrip', descrip);
-    const editLink = createNewElement('H5', 'edit-todo-link', 'Edit todo')
+    const amendTodoCont = createNewElement('DIV', 'amend-todo-cont');
+    const deleteLink = createNewElement('H5', 'delete-todo-link', 'Delete todo');
+    const editLink = createNewElement('H5', 'edit-todo-link', 'Edit todo');
+    amendTodoCont.append(editLink, deleteLink)
 
-    todoInfoCont.append(todoCheckbox, todoTitle, todoDate, todoDescrip, editLink)
+    todoInfoCont.append(checkBoxCont, todoTitle, todoDate, todoDescrip, amendTodoCont)
 
     //Edit Form
     const todoEditFormCont = createNewElement('DIV', 'todo-edit-form-cont');
@@ -56,7 +64,7 @@ function displayTodo(cont, id, title, date, descrip){
 
     const editDateInput = createNewElement('INPUT', 'edit-date-input');
     editDateInput.id = 'edit-todo-date';
-    editDateInput.setAttribute('type', 'text');
+    editDateInput.setAttribute('type', 'date');
 
     const editDateLabel = createNewElement('LABEL', 'edit-date-label');
     editDateLabel.htmlFor = 'edit-todo-date';
@@ -113,6 +121,7 @@ function switchDisplay(el, newDisplay){
 }
 
 function populateEditForm(form, todo){
+    console.log(todo)
     form.children[1].value = todo.children[1].textContent; //title
     form.children[3].value = todo.children[3].textContent; //descrip
     form.children[5].value = todo.children[2].textContent;  //date
@@ -124,4 +133,29 @@ function clearFormData(form){
     }
 }
 
-export { clearHTML, createNewElement, displayTodo, updateTodo, appendProjectLabel, switchDisplay, displayProjLabel, switchActive, displayTodos, populateEditForm, clearFormData }
+function resetLocalStorage(projects){
+    localStorage.clear();
+
+    const storedProjects = {
+        stored: []
+    }
+    
+    for (const project of projects){
+        console.log(project)
+        const storedData = (name, id, todos) => {
+            let obj = {name, id, todos};
+            return obj
+        }
+        console.log(storedData(project.name, project.id, project.getTodos()))
+        storedProjects.stored.push(storedData(project.name, project.id, project.getTodos()))
+    }
+    localStorage.setItem(`projects`, JSON.stringify(storedProjects))
+    localStorage.setItem(`active`, document.querySelector('.active').classList[1]);
+}
+
+function switchCheckbox(box){
+    box.style.backgroundColor = '#FFF';
+}
+
+
+export { clearHTML, createNewElement, displayTodo, updateTodo, appendProjectLabel, switchDisplay, displayProjLabel, switchActive, displayTodos, populateEditForm, clearFormData, resetLocalStorage }

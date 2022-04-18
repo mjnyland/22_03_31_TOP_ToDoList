@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@700&family=Roboto+Mono:wght@200;300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <title>todo</title>
 </head>
@@ -12,11 +15,8 @@
 
     <div class="projects-sidebar">
       <h2 class="projects-heading">Projects</h2>
+      <hr class="project-rule">
       <div class="projects-cont">
-
-        <div class="project">
-          <h3 class="project-label">Inbox</h3>
-        </div>
         
       </div>
 
@@ -26,7 +26,15 @@
         <button class="add-project-button">Add Project</button>
       </div>
 
-      <button class="new-project-button">New Project</button>
+      <div class="new-project-button-cont">
+        <svg class="new-project-button" width="26" height="26" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="26" height="26" rx="3" fill="#EEEDF1"/>
+          <rect x="12" y="5" width="2" height="16" rx="1" fill="#43335B"/>
+          <rect x="21" y="12" width="2" height="16" rx="1" transform="rotate(90 21 12)" fill="#43335B"/>
+        </svg>
+          
+        <h5>New Project</h5>
+      </div>
 
     </div>
 
@@ -42,14 +50,14 @@
         <input type="text" id="todo-descrip" name="lname"><br><br>
 
         <label for="date">Due Date:</label><br>
-        <input type="text" id="todo-date" name="date"><br><br>
+        <input type="date" id="todo-date" name="date"><br><br>
         
         <button class="add-todo-button">Add todo</button>
       </div>
-  
-      <button class="new-todo-button">New todo</button>
 
       <div class="todos-cont"></div>
+
+      <button class="new-todo-button">New todo</button> <!-- Move me -->
 
     </div>
 

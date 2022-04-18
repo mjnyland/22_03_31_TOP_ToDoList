@@ -40,7 +40,6 @@ const Project = (name, todos) => {
                 todo.id === id ? todo.complete = !todo.complete : todo
             })
         },
-
         todos,
         name
     }
