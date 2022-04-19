@@ -82,9 +82,20 @@ const Controller = (() => {
         handleAddProjectRequest: function(){
             addProjectButton.addEventListener('click', (e) => {
                 const projectName = document.getElementById("project-name");
+                let duplicate = false;
+                for(const project of projects){
+                    console.log(project.name);
+                    console.log(projectName.textContent)
+                    if(project.name === projectName.value){
+                        duplicate = true;
+                        break;
+                    }
+                }
 
                 if (projectName.value === ''){
                     alert('Project must have a name')
+                } else if (duplicate) {
+                    alert('Project already created')
                 } else {
                     const newProjectObj = Project(projectName.value, [])
                     projects.push(newProjectObj);
