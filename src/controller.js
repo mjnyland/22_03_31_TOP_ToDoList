@@ -82,10 +82,9 @@ const Controller = (() => {
         handleAddProjectRequest: function(){
             addProjectButton.addEventListener('click', (e) => {
                 const projectName = document.getElementById("project-name");
+
                 let duplicate = false;
                 for(const project of projects){
-                    console.log(project.name);
-                    console.log(projectName.textContent)
                     if(project.name === projectName.value){
                         duplicate = true;
                         break;
@@ -98,8 +97,9 @@ const Controller = (() => {
                     alert('Project already created')
                 } else {
                     const newProjectObj = Project(projectName.value, [])
+                    newProjectObj.id = projects[projects.length - 1].id +1;
                     projects.push(newProjectObj);
-                    newProjectObj.id = projects.length - 1;
+
 
                     DOM.switchDisplay(newProjectForm, 'none');
                     DOM.displayProjLabel(projectName.value, newProjectObj.id);
@@ -113,12 +113,15 @@ const Controller = (() => {
                 console.log(e.target)
                 if(e.target.classList[0] === 'project'){
 
+                    console.log(projects)
+
                     //Switching active class
                     const currActive = document.querySelector('.active');
                     DOM.switchActive(currActive, e.target);
 
                     //Matching target with obj
-                    const proj = this.findMatchProj(e.target.classList[1])
+                    const proj = this.findMatchProj(e.target.classList[1]);
+                    console.log(proj)
 
                     //Displaying obj
                     projectHeading.textContent = proj.name;
@@ -250,11 +253,18 @@ const Controller = (() => {
                     projects = projects.filter(project => project.id !== proj.id);
 
                     //call load todos on next project
-                    DOM.switchActive(document.querySelector('.active'), projectsCont.children[0])
+                    DOM.switchActive(currActive, projectsCont.children[0])
                     projectHeading.textContent = projects[0].name;
                     this.loadTodos(todosCont, projects[0], projects);
 
-                    projectsCont.children[proj.id].remove();
+                    for(let i = 0; i < projectsCont.children.length; i++){
+                        if(projectsCont.children[i].classList[1] === proj.id.toString()){
+                            console.log(proj.id)
+                            console.log(projectsCont.children[i])
+                            projectsCont.children[i].remove()
+                        }
+                    }
+                
                 }
             }) 
         },

@@ -26,6 +26,7 @@ button{
     font-family: 'Roboto Mono', monospace;
     color: var(--lightPurp);
     margin-bottom: 10px;
+    cursor: pointer;
 }
 
 input{
