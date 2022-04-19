@@ -21,13 +21,13 @@
       </div>
 
       <div class="new-project-form">
-        <label for="project-name">Name:</label><br>
-        <input type="text" id="project-name" name="project-name" placeholder="Project Name"><br>
+        <label for="project-name">Name:</label>
+        <input type="text" id="project-name" name="project-name" placeholder="Project Name">
         <button class="add-project-button">Add Project</button>
       </div>
 
       <div class="new-project-button-cont">
-        <svg class="new-project-button" width="26" height="26" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg class="new-project-button" width="26" height="26" viewBox="0 -3 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="26" height="26" rx="3" fill="#EEEDF1"/>
           <rect x="12" y="5" width="2" height="16" rx="1" fill="#43335B"/>
           <rect x="21" y="12" width="2" height="16" rx="1" transform="rotate(90 21 12)" fill="#43335B"/>
@@ -41,23 +41,37 @@
     <div class="current-project">
       <h1 class="project-heading">Inbox</h1>
 
+      <div class="amend-project-cont">
+
+        <div class="new-todo-button-cont">
+          <svg class="new-todo-button" width="2" height="26" viewBox="-1 -5 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="26" height="26" rx="3" fill="#AD76AE"/>
+            <rect x="12" y="5" width="2" height="16" rx="1" fill="#43335B"/>
+            <rect x="21" y="12" width="2" height="16" rx="1" transform="rotate(90 21 12)" fill="#43335B"/>
+          </svg>
+            
+          <h5>New Todo</h5>
+        </div>
+
+        <h5 class="projects-delete-link">Delete Project</h5>
+      </div>
+
       <div class="new-todo-form">
 
-        <label for="fname">Title:</label><br>
-        <input type="text" id="todo-title" name="fname"><br>
+        <label for="fname">Title:</label>
+        <input type="text" id="todo-title" name="fname">
 
-        <label for="lname">Description:</label><br>
-        <input type="text" id="todo-descrip" name="lname"><br><br>
+        <label for="lname">Description:</label>
+        <input type="text" id="todo-descrip" name="lname">
 
-        <label for="date">Due Date:</label><br>
-        <input type="date" id="todo-date" name="date"><br><br>
+        <label for="date">Due Date:</label>
+        <input type="date" id="todo-date" name="date">
         
         <button class="add-todo-button">Add todo</button>
       </div>
 
       <div class="todos-cont"></div>
 
-      <button class="new-todo-button">New todo</button> <!-- Move me -->
 
     </div>
 
