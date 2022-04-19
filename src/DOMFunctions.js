@@ -1,3 +1,5 @@
+import { de } from "date-fns/locale";
+
 function clearHTML(el) {
     while(el.firstChild) {
         el.removeChild(el.firstChild)
@@ -14,7 +16,10 @@ function createNewElement(el, className, textContent){
 
 function displayTodos(proj){
     const todosCont = document.querySelector('.todos-cont');
-    //console.log(proj.getTodos())
+
+    const deleteProjLink = document.querySelector('.projects-delete-link');
+    proj.id === 0 ? deleteProjLink.style.display = 'none' : deleteProjLink.style.display = 'block';
+
     if(proj.getTodos().length > 0){
         proj.getTodos().forEach((todo) => {
             displayTodo(todosCont, todo.id, todo.title, todo.date, todo.descrip)
@@ -85,7 +90,6 @@ function displayTodo(cont, id, title, date, descrip){
 }
 
 function updateTodo(todoCont, title, date, descrip){
-    console.log('Updating todo')
     const todoCheckbox = createNewElement('INPUT', 'todo-checkbox');
     todoCheckbox.type = "checkbox"
     const todoTitle = createNewElement('H3', 'todo-title', title);
@@ -121,7 +125,6 @@ function switchDisplay(el, newDisplay){
 }
 
 function populateEditForm(form, todo){
-    console.log(todo)
     form.children[1].value = todo.children[1].textContent; //title
     form.children[3].value = todo.children[3].textContent; //descrip
     form.children[5].value = todo.children[2].textContent;  //date
@@ -134,21 +137,24 @@ function clearFormData(form){
 }
 
 function resetLocalStorage(projects){
+    //clear existing storage
     localStorage.clear();
 
+    //create obj to store projects in
     const storedProjects = {
         stored: []
     }
     
+    //for every project store an obj with name, id, and todos
     for (const project of projects){
-        console.log(project)
-        const storedData = (name, id, todos) => {
-            let obj = {name, id, todos};
+        const storedData = (name, id, todos) => { 
+            const obj = {name, id, todos} 
             return obj
-        }
-        console.log(storedData(project.name, project.id, project.getTodos()))
+        };
         storedProjects.stored.push(storedData(project.name, project.id, project.getTodos()))
     }
+
+    //set local storage items
     localStorage.setItem(`projects`, JSON.stringify(storedProjects))
     localStorage.setItem(`active`, document.querySelector('.active').classList[1]);
 }

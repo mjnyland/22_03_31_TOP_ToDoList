@@ -18,12 +18,36 @@ body{
     grid-template-rows: 1fr;
 }
 
+button{
+    background-color: var(--purp);
+    border: none;
+    border-radius: 3px;
+    height: 30px;
+    font-family: 'Roboto Mono', monospace;
+    color: var(--lightPurp);
+    margin-bottom: 10px;
+}
+
+input{
+    background-color: var(--lightPurp);
+    border: none;
+    margin-bottom: 10px;
+    height: 30px;
+    font-family: 'Roboto Mono', monospace;
+    padding-left: 1em;
+}
+
+label{
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
 /*----------------------------------------------------------Projects--*/
 
 .current-project{
     background-color: var(--darkPurp);
     display: grid;
-    grid-template-rows: 80px 1fr;
+    grid-template-rows: 80px 30px auto 1fr;
     padding-left: 3em;
 }
 
@@ -32,6 +56,20 @@ body{
     height: 30px;
     font-weight: 400;
     font-size: 18px;
+}
+
+.amend-project-cont{
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.projects-delete-link{
+    cursor: pointer;
+    grid-row: 2/3;
+    margin: 0 0 0 20px;
+    font-family: 'Roboto Mono', monospace;
+    color: var(--purp)
 }
 
 .project-rule{
@@ -79,27 +117,15 @@ body{
     padding: 1em 1em 0 1em;
 }
 
-.new-project-button-cont{
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: left;
-    margin-left: 20px;
-}
-
-.new-project-button-cont h5{
-    margin-left: 10px;
-    opacity: .3;
-}
-
 /*----------------------------------------------------------Todo--*/
 
 .new-todo-form{
+    font-family: 'Roboto Mono', monospace;
     display: none;
-    position: absolute;
     top: 180px;
-    height: 300px;
-    width: 100%;
+    height: 250px;
+    width: 80%;
+    margin-top: 1em;
 }
 
 .new-todo-button{
@@ -109,8 +135,7 @@ body{
 
 .todos-cont{
     margin-top: 2em;
-    grid-row: 2/3;
-    height: 100%;
+    grid-row: 4/5;
 }
 
 .todo{
@@ -138,6 +163,7 @@ body{
 
 .todo-checkbox{
     grid-column: 1/2;
+    cursor: pointer;
 }
 
 .todo-title,
@@ -199,18 +225,54 @@ body{
     display: none;
 }
 
-.todo-edit-form-cont label{
+.todo-edit-form-cont label,
+.new-todo-form label{
     color: var(--purp);
     font-size: 14px;
     font-weight: 400;
     margin-bottom: 8px;
 }
 
-.todo-edit-form-cont input{
+.todo-edit-form-cont input,
+.new-todo-form input{
     margin-bottom: 8px;
 }
 
 .todo-descrip{
     font-weight: 300;
     font-size: 16px;
+}
+
+/*----------------------------------------------------------Buttons--*/
+
+.new-project-button-cont,
+.new-todo-button-cont{
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+
+
+.new-todo-button{
+    width: 25px;
+}
+
+
+
+.new-project-button-cont{
+    margin-left: 20px;
+}
+
+.new-todo-button-cont h5{
+    margin: 0;
+    font-family: 'Roboto Mono', monospace;
+    color: var(--purp);
+    margin-left: 10px;
+    pointer-events: none;
+}
+
+.new-project-button-cont h5{
+    margin-left: 10px;
+    opacity: .3;
 }

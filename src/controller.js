@@ -11,7 +11,7 @@ const Controller = (() => {
     const todosCont = document.querySelector('.todos-cont');
     const projectHeading = document.querySelector('.project-heading');
 
-    const newTodoButton = document.querySelector('.new-todo-button');
+    const newTodoButton = document.querySelector('.new-todo-button-cont');
     const newTodoForm = document.querySelector('.new-todo-form');
     const editTodoForm = document.querySelector('.todo-edit-form')
 
@@ -75,7 +75,7 @@ const Controller = (() => {
 
         handleNewProjectRequest: function(){
             newProjectButton.addEventListener('click', (e) => {
-                DOM.switchDisplay(newProjectForm, 'block')
+                DOM.switchDisplay(newProjectForm, 'grid')
             })
         },
 
@@ -99,6 +99,7 @@ const Controller = (() => {
 
         handleProjectChangeRequest: function(){
             document.addEventListener('click', (e) => {
+                console.log(e.target)
                 if(e.target.classList[0] === 'project'){
 
                     //Switching active class
@@ -117,7 +118,7 @@ const Controller = (() => {
         
         handleNewTodoRequest: function(){
             newTodoButton.addEventListener('click', (e) => {
-                DOM.switchDisplay(newTodoForm, 'block')
+                DOM.switchDisplay(newTodoForm, 'grid')
             })
         },
 
@@ -188,8 +189,7 @@ const Controller = (() => {
 
         handleDeleteTodoRequest: function(){
             document.addEventListener('click', (e) => {
-                if(e.target.className === 'delete-todo-link'){
-                    console.log('delete')
+                if(e.target.className === 'delete-todo-link' || e.target.className === 'todo-checkbox'){
 
                     //find match obj and todo
                     const currActive = document.querySelector('.active');
@@ -203,30 +203,49 @@ const Controller = (() => {
 
                     this.loadTodos(todosCont, proj, projects)
 
-                    /*
-                    console.log(proj.getTodos())
-                    const storedData = JSON.parse(localStorage.getItem('projects'));
-                    storedData.stored.forEach(project => {
-                        console.log(project.todos)
-                    })
-                    */
                 }
             })
         },
+        /*
 
         handleCheckboxClick: function(){
             document.addEventListener('click', (e) => {
-                const todoCheckbox = document.querySelector('.todo-checkbox');
                 if(e.target.className === 'todo-checkbox'){
-                    if(todoCheckbox.style.backgroundColor === '#FFF'){
-                        console.log('switch to purp')
-                        todoCheckbox.style.backgroundColor = 'var(--darkPurp)'
-                    } else {
-                        console.log('switch to white')
-                        todoCheckbox.style.backgroundColor = '#FFF'
-                    }
+                     //find match obj and todo
+                     const currActive = document.querySelector('.active');
+                     const proj = this.findMatchProj(currActive.classList[1]);
+                     const targetTodoId = parseInt(e.target.parentNode.parentNode.parentNode.classList[1]);
+ 
+                     //remove todo obj from project
+                     proj.deleteTodo(targetTodoId);
+ 
+                     //display project
+ 
+                     this.loadTodos(todosCont, proj, projects)
                 }
             })
+        },
+        */
+
+        handleProjectDelete: function(){
+            document.addEventListener('click', (e) => {
+                if(e.target.className === 'projects-delete-link'){
+
+                    //find active obj
+                    const currActive = document.querySelector('.active');
+                    const proj = this.findMatchProj(currActive.classList[1]);
+
+                    //remove obj from projects
+                    projects = projects.filter(project => project.id !== proj.id);
+
+                    //call load todos on next project
+                    DOM.switchActive(document.querySelector('.active'), projectsCont.children[0])
+                    projectHeading.textContent = projects[0].name;
+                    this.loadTodos(todosCont, projects[0], projects);
+
+                    projectsCont.children[proj.id].remove();
+                }
+            }) 
         },
 
         instantiateWebsite: function(){
@@ -239,7 +258,8 @@ const Controller = (() => {
             Controller.handleEditTodoRequest()
             Controller.handleUpdateTodoRequest()
             Controller.handleDeleteTodoRequest()
-            Controller.handleCheckboxClick()
+            //Controller.handleCheckboxClick(),
+            Controller.handleProjectDelete()
         }
 
 
