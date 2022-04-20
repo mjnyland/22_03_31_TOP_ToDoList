@@ -1,4 +1,3 @@
-import { Todo } from './todo'
 import { Project } from './project'
 import * as DOM from './DOMFunctions'
 
@@ -10,10 +9,8 @@ const Controller = (() => {
     const projectsCont = document.querySelector('.projects-cont');
     const todosCont = document.querySelector('.todos-cont');
     const projectHeading = document.querySelector('.project-heading');
-
     const newTodoButton = document.querySelector('.new-todo-button-cont');
     const newTodoForm = document.querySelector('.new-todo-form');
-    const editTodoForm = document.querySelector('.todo-edit-form')
 
     let projects = []
 
@@ -110,10 +107,9 @@ const Controller = (() => {
 
         handleProjectChangeRequest: function(){
             document.addEventListener('click', (e) => {
-                console.log(e.target)
                 if(e.target.classList[0] === 'project'){
 
-                    console.log(projects)
+                    newProjectForm.style.display = 'none';
 
                     //Switching active class
                     const currActive = document.querySelector('.active');
@@ -121,7 +117,6 @@ const Controller = (() => {
 
                     //Matching target with obj
                     const proj = this.findMatchProj(e.target.classList[1]);
-                    console.log(proj)
 
                     //Displaying obj
                     projectHeading.textContent = proj.name;
@@ -220,26 +215,6 @@ const Controller = (() => {
                 }
             })
         },
-        /*
-
-        handleCheckboxClick: function(){
-            document.addEventListener('click', (e) => {
-                if(e.target.className === 'todo-checkbox'){
-                     //find match obj and todo
-                     const currActive = document.querySelector('.active');
-                     const proj = this.findMatchProj(currActive.classList[1]);
-                     const targetTodoId = parseInt(e.target.parentNode.parentNode.parentNode.classList[1]);
- 
-                     //remove todo obj from project
-                     proj.deleteTodo(targetTodoId);
- 
-                     //display project
- 
-                     this.loadTodos(todosCont, proj, projects)
-                }
-            })
-        },
-        */
 
         handleProjectDelete: function(){
             document.addEventListener('click', (e) => {
@@ -259,8 +234,6 @@ const Controller = (() => {
 
                     for(let i = 0; i < projectsCont.children.length; i++){
                         if(projectsCont.children[i].classList[1] === proj.id.toString()){
-                            console.log(proj.id)
-                            console.log(projectsCont.children[i])
                             projectsCont.children[i].remove()
                         }
                     }
@@ -279,7 +252,6 @@ const Controller = (() => {
             Controller.handleEditTodoRequest()
             Controller.handleUpdateTodoRequest()
             Controller.handleDeleteTodoRequest()
-            //Controller.handleCheckboxClick(),
             Controller.handleProjectDelete()
         }
 
